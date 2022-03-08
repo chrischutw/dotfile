@@ -1,0 +1,7 @@
+[alias]
+    co = checkout
+    l = log --oneline --graph
+    br = branch
+[user]
+    email = chrischu@pixnet.tw
+    name = Chris Chu
