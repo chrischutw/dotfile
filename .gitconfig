@@ -2,6 +2,8 @@
     co = checkout
     l = log --oneline --graph
     br = branch
+    s = status
 [user]
-    email = chrischu@pixnet.tw
+[user]
+    email = c20711@gmail.com
     name = Chris Chu
