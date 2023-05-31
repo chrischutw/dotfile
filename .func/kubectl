@@ -1,0 +1,41 @@
+k_use_context() {
+  select context in exit $(kubectl config get-contexts -o name)
+  do 
+    if [ "${context}" = "exit" ]
+    then
+        break
+    fi
+  kubectl config use-context ${context}
+  done
+  }
+
+kaf() {
+  kubectl apply -f $1
+  }
+
+kafd() {
+  kubectl apply -f $1 --dry-run=client
+  }
+
+kdf() {
+  kubectl delete -f $1
+  }
+
+kde() {
+  resource=$1
+  name=$2
+  namespace=$3
+  if [ $# -lt '3' ]
+  then
+    namespace="default"
+  fi
+  kubectl describe $1 $2 -n ${namespace}
+  }
+
+kgetall() {
+  namespace=$1
+  for resource in $(kubectl api-resources --verbs=list --namespaced -o name | grep -v "events.events.k8s.io" | grep -v "events" | sort | uniq); do
+    echo "Resource:" ${resource}
+    kubectl -n ${namespace} get --ignore-not-found ${resource}
+  done
+  }

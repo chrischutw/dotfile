@@ -1,0 +1,30 @@
+ec2_list() {
+  aws ec2 describe-instances \
+  --query "Reservations[].Instances[].[{Name: join(',',Tags[?Key=='Name'].Value),Env: join(',',Tags[?Key=='Environment'].Value), ID: InstanceId, Platform: PlatformDetails, IP: PrivateIpAddress, Type: InstanceType, AZ: Placement.AvailabilityZone}]|[][]|sort_by(@, &Env)" \
+  --no-paginate --region ${AWS_REGION} --output table
+  }
+
+account_list_region() {
+  select region in exit $(aws account list-regions --query 'Regions[?RegionOptStatus>=`ENABLED`].{RegionName: RegionName}' --output text)
+  do 
+    if [ "${region}" = "exit" ]
+    then 
+        break
+    fi
+  export AWS_REGION=${region}
+  done
+  }
+
+ec2_list_images() {
+  NAME=$1
+  REGION=$2
+  aws ec2 describe-images --region ${REGION} --filters "Name=name,Values=${NAME}" --query 'reverse(sort_by(Images, &CreationDate))[].{ImageId: ImageId, Name: Name}' --output text 
+  }
+
+ec2_list_instance() {
+  aws ec2 describe-instances --query "Reservations[].Instances[].[{Name: join(',',Tags[?Key=='Name'].Value),Env: join(',',Tags[?Key=='Environment'].Value), ID: InstanceId, Platform: PlatformDetails, IP: PrivateIpAddress, Type: InstanceType, AZ: Placement.AvailabilityZone}]|[][]|sort_by(@, &Env)" --no-paginate  --output table
+  }
+ 
+ec2_list_alb() {
+  aws ec2 describe-instances --query "Reservations[].Instances[].[{Name: join(',',Tags[?Key=='Name'].Value),Env: join(',',Tags[?Key=='Environment'].Value), ID: InstanceId, Platform: PlatformDetails, IP: PrivateIpAddress, Type: InstanceType, AZ: Placement.AvailabilityZone}]|[][]|sort_by(@, &Env)" --no-paginate  --output table
+}
