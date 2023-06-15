@@ -10,14 +10,19 @@ k_use_context() {
   }
 
 kaf() {
-  kubectl apply -f $1
-  }
-
-kafd() {
+  k config get-contexts
   kubectl apply -f $1 --dry-run=client
   }
 
+kafd() {
+  kubectl apply -f $1
+  }
+
 kdf() {
+  k config get-contexts
+  kubectl delete -f $1 --dry-run=client
+  }
+kdfd() {
   kubectl delete -f $1
   }
 

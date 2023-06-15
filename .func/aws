@@ -1,10 +1,10 @@
-ec2_list() {
+aws_ec2() {
   aws ec2 describe-instances \
   --query "Reservations[].Instances[].[{Name: join(',',Tags[?Key=='Name'].Value),Env: join(',',Tags[?Key=='Environment'].Value), ID: InstanceId, Platform: PlatformDetails, IP: PrivateIpAddress, Type: InstanceType, AZ: Placement.AvailabilityZone}]|[][]|sort_by(@, &Env)" \
   --no-paginate --region ${AWS_REGION} --output table
   }
 
-account_list_region() {
+aws_region() {
   select region in exit $(aws account list-regions --query 'Regions[?RegionOptStatus>=`ENABLED`].{RegionName: RegionName}' --output text)
   do 
     if [ "${region}" = "exit" ]
