@@ -4,6 +4,9 @@
     br = branch
     s = status
 [user]
-[user]
     email = c20711@gmail.com
     name = Chris Chu
+[credential]
+    helper = /mnt/d/Users/s472416/AppData/Local/Programs/Git/mingw64/bin/git-credential-manager.exe
+[credential "https://dev.azure.com"]
+    useHttpPath = true
