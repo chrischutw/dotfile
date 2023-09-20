@@ -8,10 +8,10 @@ function gdig
     set domain $argv[1]
 
     # Convert domain to --zone parameter value
-    set zone (echo $domain | sed 's/\./-/g')
-
+    set modified_string (string replace -r '^[^.]*\.' '' -- $domain)
+    set zone (string replace -a '.' '-' -- $modified_string)
     # Execute the gcloud command
-    gcloud dns record-sets list --zone=sinyi-com-tw --name=$domain
+    gcloud dns record-sets list --zone=$zone --name=$domain
 end
 
 function gdigx
