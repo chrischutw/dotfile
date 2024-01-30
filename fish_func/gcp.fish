@@ -22,9 +22,14 @@ function gdigx
     end
 
     set IP $argv[1]
+    set ZONE $argv[2]
 
     # Execute the gcloud command
-    gcloud dns record-sets list --zone=sinyi-com-tw --filter="DATA:$IP"
+    if test (count $argv) -eq 1
+        gcloud dns record-sets list --zone=sinyi-com-tw --filter="DATA:$IP"
+    else
+        gcloud dns record-sets list --zone=$ZONE --filter="DATA:$IP"
+    end
 end
 
 function gssh
